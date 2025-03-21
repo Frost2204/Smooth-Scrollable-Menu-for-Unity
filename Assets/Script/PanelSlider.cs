@@ -5,13 +5,13 @@ using System.Collections;
 public class PanelSlider : MonoBehaviour
 {
     public RectTransform mainPanel;
-    public RectTransform[] pages; // Assign the 5 page panels in Inspector
+    public RectTransform[] pages;
     public float slideSpeed = 10f;
     public Button[] buttons;
     public RectTransform[] buttonIcons;
     public CanvasScaler canvasScaler;
 
-    private int currentPage = 0; // Centered at 0, range is -2 to 2
+    private int currentPage = 0;
     private Coroutine slideCoroutine;
     private Vector2 startTouchPosition, endTouchPosition;
     private Vector2 lastScreenSize;
@@ -19,7 +19,7 @@ public class PanelSlider : MonoBehaviour
     void Start()
     {
         lastScreenSize = new Vector2(Screen.width, Screen.height);
-        AdjustPanels(); // Resize child panels on start
+        AdjustPanels(); 
         AdjustPanelPositions();
     }
 
@@ -30,7 +30,7 @@ public class PanelSlider : MonoBehaviour
         if (Screen.width != lastScreenSize.x || Screen.height != lastScreenSize.y)
         {
             lastScreenSize = new Vector2(Screen.width, Screen.height);
-            AdjustPanels();  // Resize child panels correctly
+            AdjustPanels();
             AdjustPanelPositions();
         }
     }
@@ -69,11 +69,11 @@ public class PanelSlider : MonoBehaviour
             endTouchPosition = Input.mousePosition;
             float swipeDistance = endTouchPosition.x - startTouchPosition.x;
 
-            if (Mathf.Abs(swipeDistance) > 50) // Minimum swipe distance
+            if (Mathf.Abs(swipeDistance) > 50)
             {
-                if (swipeDistance < 0 && currentPage < 2)  // Swipe Left (Move Right)
+                if (swipeDistance < 0 && currentPage < 2)
                     SlideToPage(currentPage + 1);
-                else if (swipeDistance > 0 && currentPage > -2) // Swipe Right (Move Left)
+                else if (swipeDistance > 0 && currentPage > -2)
                     SlideToPage(currentPage - 1);
             }
         }
@@ -83,7 +83,7 @@ public class PanelSlider : MonoBehaviour
     {
         for (int i = 0; i < buttonIcons.Length; i++)
         {
-            int buttonIndex = i - 2; // Convert to -2 to 2
+            int buttonIndex = i - 2;
             buttonIcons[i].localScale = (buttonIndex == currentPage) ? Vector3.one * 1.1f : Vector3.one;
         }
     }
@@ -92,14 +92,12 @@ public class PanelSlider : MonoBehaviour
     {
         float screenWidth = GetScreenWidth();
 
-        // Resize each child panel (pages) to match screen width
         for (int i = 0; i < pages.Length; i++)
         {
-            pages[i].sizeDelta = new Vector2(screenWidth, pages[i].sizeDelta.y); // Set width
-            pages[i].anchoredPosition = new Vector2((i - 2) * screenWidth, pages[i].anchoredPosition.y); // Adjust based on -2 to 2
+            pages[i].sizeDelta = new Vector2(screenWidth, pages[i].sizeDelta.y);
+            pages[i].anchoredPosition = new Vector2((i - 2) * screenWidth, pages[i].anchoredPosition.y);
         }
 
-        // Resize mainPanel to fit all pages
         mainPanel.sizeDelta = new Vector2(screenWidth * pages.Length, mainPanel.sizeDelta.y);
     }
 
